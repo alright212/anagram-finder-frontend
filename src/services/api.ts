@@ -42,6 +42,15 @@ class ApiService {
   async getWordbaseStatus(): Promise<ApiResponse<WordbaseStatus>> {
     try {
       const response = await this.client.get("/wordbase/status");
+
+      // Transform Laravel response format to our ApiResponse format
+      if (response.data && response.data.data) {
+        return {
+          success: true,
+          data: response.data.data,
+        };
+      }
+
       return response.data;
     } catch (error) {
       return this.handleError(error);
@@ -53,6 +62,15 @@ class ApiService {
   ): Promise<ApiResponse<WordbaseImportResponse>> {
     try {
       const response = await this.client.post("/wordbase/import", data);
+
+      // Transform Laravel response format to our ApiResponse format
+      if (response.data && response.data.data) {
+        return {
+          success: true,
+          data: response.data.data,
+        };
+      }
+
       return response.data;
     } catch (error) {
       return this.handleError(error);
@@ -65,6 +83,15 @@ class ApiService {
       const response = await this.client.get(
         `/anagrams/${encodeURIComponent(word)}`
       );
+
+      // Transform Laravel response format to our ApiResponse format
+      if (response.data && response.data.data) {
+        return {
+          success: true,
+          data: response.data.data,
+        };
+      }
+
       return response.data;
     } catch (error) {
       return this.handleError(error);
@@ -74,6 +101,15 @@ class ApiService {
   async getAnagramStats(): Promise<ApiResponse<AnagramStats>> {
     try {
       const response = await this.client.get("/anagrams/stats");
+
+      // Transform Laravel response format to our ApiResponse format
+      if (response.data && response.data.data) {
+        return {
+          success: true,
+          data: response.data.data,
+        };
+      }
+
       return response.data;
     } catch (error) {
       return this.handleError(error);

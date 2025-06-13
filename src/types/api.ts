@@ -37,12 +37,19 @@ export interface WordbaseImportResponse {
 
 // Anagram types
 export interface AnagramResponse {
-  word: string;
+  original_word: string;
+  canonical_form: string;
   anagrams: string[];
   count: number;
-  algorithm_used: string;
-  execution_time: number;
+  word_length: number;
+  has_unicode: boolean;
+  is_estonian_chars: boolean;
+  message: string;
+  algorithm_used?: string;
+  execution_time?: number;
   search_depth?: number;
+  // Legacy fields for backward compatibility
+  word?: string;
 }
 
 export interface AnagramStats {

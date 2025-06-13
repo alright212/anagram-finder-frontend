@@ -123,7 +123,7 @@ const HomePage: React.FC = () => {
                   Total Words
                 </Text>
                 <Text fontSize="2xl" fontWeight="bold" color="blue.500">
-                  {wordbaseStatus.total_words.toLocaleString()}
+                  {(wordbaseStatus.total_words || 0).toLocaleString()}
                 </Text>
                 <Text fontSize="xs" color="gray.400">
                   in database
@@ -137,7 +137,9 @@ const HomePage: React.FC = () => {
                       Unique Anagrams
                     </Text>
                     <Text fontSize="2xl" fontWeight="bold" color="teal.500">
-                      {anagramStats.total_unique_anagrams.toLocaleString()}
+                      {(
+                        anagramStats.total_unique_anagrams || 0
+                      ).toLocaleString()}
                     </Text>
                     <Text fontSize="xs" color="gray.400">
                       combinations
@@ -149,10 +151,10 @@ const HomePage: React.FC = () => {
                       Most Anagrams
                     </Text>
                     <Text fontSize="2xl" fontWeight="bold" color="orange.500">
-                      {anagramStats.most_anagrams.count}
+                      {anagramStats.most_anagrams?.count || 0}
                     </Text>
                     <Text fontSize="xs" color="gray.400">
-                      for "{anagramStats.most_anagrams.word}"
+                      for "{anagramStats.most_anagrams?.word || "N/A"}"
                     </Text>
                   </Box>
 
@@ -161,9 +163,9 @@ const HomePage: React.FC = () => {
                       Avg Search Time
                     </Text>
                     <Text fontSize="2xl" fontWeight="bold" color="green.500">
-                      {anagramStats.algorithm_performance.average_time.toFixed(
-                        2
-                      )}
+                      {(
+                        anagramStats.algorithm_performance?.average_time || 0
+                      ).toFixed(2)}
                       ms
                     </Text>
                     <Text fontSize="xs" color="gray.400">
@@ -297,8 +299,8 @@ const HomePage: React.FC = () => {
             <Heading size="md">Ready to Search!</Heading>
             <Text>
               Your word database is loaded with{" "}
-              {wordbaseStatus.total_words.toLocaleString()} words. Start finding
-              anagrams now!
+              {(wordbaseStatus.total_words || 0).toLocaleString()} words. Start
+              finding anagrams now!
             </Text>
             <Button
               onClick={() => navigate("/search")}

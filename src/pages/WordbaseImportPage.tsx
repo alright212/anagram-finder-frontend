@@ -128,7 +128,7 @@ const WordbaseImportPage: React.FC = () => {
             <SimpleGrid columns={{ base: 1, md: 3 }} gap={6}>
               <Box textAlign="center">
                 <Text fontSize="2xl" fontWeight="bold" color="blue.500">
-                  {currentStatus.total_words.toLocaleString()}
+                  {(currentStatus.total_words || 0).toLocaleString()}
                 </Text>
                 <Text fontSize="sm" color="gray.500">
                   Total Words
@@ -233,7 +233,7 @@ const WordbaseImportPage: React.FC = () => {
             <Button
               type="submit"
               colorScheme="blue"
-              loading={isSubmitting || isImporting}
+              isLoading={isSubmitting || isImporting}
               loadingText="Importing..."
               size="lg"
             >

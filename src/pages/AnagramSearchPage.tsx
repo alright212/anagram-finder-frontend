@@ -8,12 +8,19 @@ import {
   Input,
   Button,
   Card,
+  CardHeader,
+  CardBody,
   SimpleGrid,
   Badge,
   Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
   Spinner,
-  Field,
-  Separator,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  Divider,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { Search, Clock, AlertCircle } from "lucide-react";
@@ -73,8 +80,9 @@ const AnagramSearchPage: React.FC = () => {
             ...prev.filter((w) => w !== data.word.trim().toLowerCase()),
           ].slice(0, 10)
         );
+        // Don't show error if no anagrams found - this is a valid result
       } else {
-        setError(response.error?.message || t("errors.wordNotFound"));
+        setError(response.error?.message || t("errors.networkError"));
       }
     } catch {
       setError(t("errors.networkError"));
@@ -100,12 +108,12 @@ const AnagramSearchPage: React.FC = () => {
       </Box>
 
       {/* Search Form */}
-      <Card.Root>
-        <Card.Body>
+      <Card>
+        <CardBody>
           <form onSubmit={handleSubmit(onSubmit)}>
             <VStack gap={6}>
-              <Field.Root invalid={!!errors.word}>
-                <Field.Label>{t("search.placeholder")}</Field.Label>
+              <FormControl isInvalid={!!errors.word}>
+                <FormLabel>{t("search.placeholder")}</FormLabel>
                 <HStack>
                   <Input
                     {...register("word")}
@@ -114,38 +122,38 @@ const AnagramSearchPage: React.FC = () => {
                   />
                   <Button
                     type="submit"
-                    colorPalette="blue"
+                    colorScheme="blue"
                     size="lg"
-                    loading={isLoading}
+                    isLoading={isLoading}
                     loadingText="Searching..."
-                    disabled={!currentWord || currentWord.length < 2}
+                    isDisabled={!currentWord || currentWord.length < 2}
+                    leftIcon={<Search size={20} />}
                   >
-                    <Search size={20} />
                     {t("search.searchButton")}
                   </Button>
                 </HStack>
-                {errors.word && (
-                  <Field.ErrorText>{errors.word.message}</Field.ErrorText>
-                )}
-              </Field.Root>
+                <FormErrorMessage>
+                  {errors.word && errors.word.message}
+                </FormErrorMessage>
+              </FormControl>
             </VStack>
           </form>
-        </Card.Body>
-      </Card.Root>
+        </CardBody>
+      </Card>
 
       {/* Search History */}
       {searchHistory.length > 0 && (
-        <Card.Root>
-          <Card.Header>
+        <Card>
+          <CardHeader>
             <Heading size="md">Recent Searches</Heading>
-          </Card.Header>
-          <Card.Body>
+          </CardHeader>
+          <CardBody>
             <HStack gap={2} wrap="wrap">
               {searchHistory.map((word, index) => (
                 <Badge
                   key={index}
                   variant="outline"
-                  colorPalette="blue"
+                  colorScheme="blue"
                   cursor="pointer"
                   onClick={() => handleHistoryClick(word)}
                   _hover={{ bg: "blue.50" }}
@@ -156,42 +164,40 @@ const AnagramSearchPage: React.FC = () => {
                 </Badge>
               ))}
             </HStack>
-          </Card.Body>
-        </Card.Root>
+          </CardBody>
+        </Card>
       )}
 
       {/* Loading State */}
       {isLoading && (
-        <Card.Root>
-          <Card.Body>
+        <Card>
+          <CardBody>
             <VStack gap={4}>
-              <Spinner size="xl" colorPalette="blue" />
+              <Spinner size="xl" color="blue.500" />
               <Text>{t("common.loading")}</Text>
             </VStack>
-          </Card.Body>
-        </Card.Root>
+          </CardBody>
+        </Card>
       )}
 
       {/* Error State */}
       {error && (
-        <Alert.Root status="error">
-          <Alert.Indicator>
-            <AlertCircle />
-          </Alert.Indicator>
-          <Alert.Title>Error</Alert.Title>
-          <Alert.Description>{error}</Alert.Description>
-        </Alert.Root>
+        <Alert status="error">
+          <AlertIcon as={AlertCircle} />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
       )}
 
       {/* Search Results */}
       {searchResult && !isLoading && (
-        <Card.Root>
-          <Card.Header>
+        <Card>
+          <CardHeader>
             <VStack gap={2} align="start">
               <HStack>
                 <Heading size="lg">{t("search.results.title")}</Heading>
-                <Badge colorPalette="blue" size="lg">
-                  {searchResult.word}
+                <Badge colorScheme="blue" size="lg">
+                  {searchResult.original_word || searchResult.word}
                 </Badge>
               </HStack>
 
@@ -199,28 +205,32 @@ const AnagramSearchPage: React.FC = () => {
                 <Text fontWeight="medium">
                   {t("search.results.count", { count: searchResult.count })}
                 </Text>
-                <HStack>
-                  <Clock size={16} />
-                  <Text>
-                    {t("search.results.executionTime", {
-                      time: searchResult.execution_time,
-                    })}
-                  </Text>
-                </HStack>
-                <Badge variant="outline" colorPalette="gray">
-                  {searchResult.algorithm_used}
-                </Badge>
+                {searchResult.execution_time && (
+                  <HStack>
+                    <Clock size={16} />
+                    <Text>
+                      {t("search.results.executionTime", {
+                        time: searchResult.execution_time,
+                      })}
+                    </Text>
+                  </HStack>
+                )}
+                {searchResult.algorithm_used && (
+                  <Badge variant="outline" colorScheme="gray">
+                    {searchResult.algorithm_used}
+                  </Badge>
+                )}
               </HStack>
             </VStack>
-          </Card.Header>
+          </CardHeader>
 
-          <Card.Body>
+          <CardBody>
             {searchResult.anagrams.length > 0 ? (
               <>
-                <Separator mb={4} />
+                <Divider mb={4} />
                 <SimpleGrid columns={{ base: 2, md: 3, lg: 4 }} gap={3}>
                   {searchResult.anagrams.map((anagram, index) => (
-                    <Card.Root
+                    <Card
                       key={index}
                       size="sm"
                       variant="outline"
@@ -232,12 +242,12 @@ const AnagramSearchPage: React.FC = () => {
                       cursor="pointer"
                       onClick={() => handleHistoryClick(anagram)}
                     >
-                      <Card.Body textAlign="center">
+                      <CardBody textAlign="center">
                         <Text fontWeight="medium" fontSize="lg">
                           {anagram}
                         </Text>
-                      </Card.Body>
-                    </Card.Root>
+                      </CardBody>
+                    </Card>
                   ))}
                 </SimpleGrid>
               </>
@@ -247,17 +257,18 @@ const AnagramSearchPage: React.FC = () => {
                   {t("search.noResults")}
                 </Text>
                 <Text fontSize="sm" color="gray.400">
-                  No anagrams found for "{searchResult.word}"
+                  No anagrams found for "
+                  {searchResult.original_word || searchResult.word}"
                 </Text>
               </VStack>
             )}
-          </Card.Body>
-        </Card.Root>
+          </CardBody>
+        </Card>
       )}
 
       {/* Tips */}
-      <Card.Root bg="blue.50" borderColor="blue.200">
-        <Card.Body>
+      <Card bg="blue.50" borderColor="blue.200">
+        <CardBody>
           <VStack gap={3} align="start">
             <Heading size="sm" color="blue.700">
               💡 Search Tips
@@ -271,8 +282,8 @@ const AnagramSearchPage: React.FC = () => {
               <Text>• Use your recent searches for quick access</Text>
             </VStack>
           </VStack>
-        </Card.Body>
-      </Card.Root>
+        </CardBody>
+      </Card>
     </VStack>
   );
 };
