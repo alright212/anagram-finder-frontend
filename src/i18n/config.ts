@@ -31,42 +31,22 @@ const ApiBackend = {
         Object.keys(translation)
       );
 
-      // Helper function to get all nested keys
-      const getAllKeys = (
-        obj: Record<string, unknown>,
-        prefix = ""
-      ): string[] => {
-        let keys: string[] = [];
-        for (const key in obj) {
-          const fullKey = prefix ? `${prefix}.${key}` : key;
-          if (
-            typeof obj[key] === "object" &&
-            obj[key] !== null &&
-            !Array.isArray(obj[key])
-          ) {
-            keys = keys.concat(
-              getAllKeys(obj[key] as Record<string, unknown>, fullKey)
-            );
-          } else {
-            keys.push(fullKey);
-          }
-        }
-        return keys;
-      };
-
-      const allKeys = getAllKeys(translation);
-      console.log(
-        `ApiBackend: Total translation keys available: ${allKeys.length}`
-      );
-      console.log(`ApiBackend: Sample keys:`, allKeys.slice(0, 10));
-
+      // Return the flattened translation object for the namespace
       callback(null, translation);
     } catch (error) {
       console.error(
         `ApiBackend: Failed to load translations for ${lng}:`,
         error
       );
-      callback(error, {});
+      // Provide minimal fallback to prevent empty UI
+      const fallbackTranslations = {
+        'navigation.title': lng === 'et' ? 'Eesti Anagrammide Leidja' : 'Estonian Anagram Finder',
+        'navigation.subtitle': lng === 'et' ? 'Leia sõnade anagramme kiirelt ja lihtsalt' : 'Find word anagrams quickly and easily',
+        'common.search': lng === 'et' ? 'Otsi' : 'Search',
+        'common.loading': lng === 'et' ? 'Laadimine...' : 'Loading...',
+        'common.error': lng === 'et' ? 'Viga' : 'Error',
+      };
+      callback(null, fallbackTranslations);
     }
   },
 
