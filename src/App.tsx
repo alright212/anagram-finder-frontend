@@ -2,18 +2,18 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n/config';
-import theme from './theme/chakra-theme';
-import Layout from './components/Layout/Layout';
-import HomePage from './pages/HomePage';
-import AnagramSearchPage from './pages/AnagramSearchPage';
-import WordbaseImportPage from './pages/WordbaseImportPage';
-import AboutPage from './pages/AboutPage';
-import { AppStateProvider } from './context/AppStateContext';
+import { system } from "./theme/chakra-theme";
+import Layout from "./components/Layout/Layout";
+import HomePage from "./pages/HomePage";
+import AnagramSearchPage from "./pages/AnagramSearchPage.tsx";
+import WordbaseImportPage from "./pages/WordbaseImportPage.tsx";
+import AboutPage from "./pages/AboutPage.tsx";
+import { AppStateProvider } from "./context/AppStateContext";
 
 function App() {
   return (
     <I18nextProvider i18n={i18n}>
-      <ChakraProvider theme={theme}>
+      <ChakraProvider value={system}>
         <AppStateProvider>
           <Router>
             <Layout>

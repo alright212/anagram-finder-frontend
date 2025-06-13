@@ -1,4 +1,5 @@
 // API Types based on your Laravel backend
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface ApiResponse<T = any> {
   data?: T;
   error?: {
@@ -11,19 +12,24 @@ export interface ApiResponse<T = any> {
 // Wordbase types
 export interface WordbaseStatus {
   total_words: number;
-  status: 'empty' | 'imported' | 'importing';
+  status: "empty" | "imported" | "importing";
   last_import?: string;
+  last_updated: string;
   languages_available: string[];
+  languages?: string[];
 }
 
 export interface WordbaseImportRequest {
-  content: string;
-  format: 'plaintext' | 'json';
+  words: string;
+  format: "text" | "json";
   language?: string;
 }
 
 export interface WordbaseImportResponse {
   message: string;
+  words_added: number;
+  duplicates_skipped: number;
+  import_time_ms: number;
   imported_count: number;
   skipped_count: number;
   total_processed: number;
