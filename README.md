@@ -1,12 +1,29 @@
 # Estonian Anagram Finder - Frontend
 
-A modern, responsive React frontend for the Estonian Anagram Finder API. Built with TypeScript, Chakra UI, and optimized for finding Estonian word anagrams.
+A modern, responsive React frontend for the Estonian Anagram Finder API. Built with TypeScript, Chakra UI, and optimized for finding Estonian word anagrams with full Unicode support.
 
-## 🚀 Features
+## 🚀 Quick Deploy to Heroku
 
-- **Fast Anagram Search**: Instant anagram detection with optimized algorithms
-- **Multilingual Support**: Estonian, English, German, and French languages
-- **Custom Word Database**: Import your own word lists in plain text or JSON format
+### One-Click Deploy
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+### Automated Script Deploy
+```bash
+# Run the automated deployment script
+./deploy-to-heroku.sh
+```
+
+### Your API is Live! 🎉
+- **API URL**: https://anagram-finder-api-9dc5f9cdb303.herokuapp.com/api/v1
+- **177,953 Estonian words** ready for anagram searches
+- **Sub-20ms response times** with Unicode support
+
+## 🌟 Features
+
+- **Fast Anagram Search**: Instant anagram detection with optimized algorithms  
+- **Estonian Language Support**: Full Unicode support for äöüõšž characters
+- **Multilingual UI**: Estonian, English, German, and French languages
+- **Production API**: Connected to your live Heroku API with 177K+ words
 - **Modern UI**: Built with Chakra UI and responsive design
 - **Real-time Statistics**: View search performance and database statistics
 - **Dark/Light Mode**: Automatic theme switching with system preference

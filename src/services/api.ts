@@ -20,7 +20,7 @@ class ApiService {
       baseURL:
         baseURL ||
         import.meta.env.VITE_API_BASE_URL ||
-        "http://localhost:8000/api/v1",
+        "https://anagram-finder-api-9dc5f9cdb303.herokuapp.com/api/v1",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

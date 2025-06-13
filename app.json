@@ -1,0 +1,40 @@
+{
+  "name": "estonian-anagram-finder-frontend",
+  "description": "Modern React frontend for Estonian Anagram Finder API with full Unicode support",
+  "repository": "https://github.com/your-username/anagram-finder-frontend",
+  "logo": "https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/EE.svg",
+  "keywords": [
+    "anagram",
+    "estonian",
+    "react",
+    "typescript",
+    "frontend",
+    "chakra-ui",
+    "unicode"
+  ],
+  "website": "https://anagram-finder-api-9dc5f9cdb303.herokuapp.com",
+  "success_url": "/",
+  "env": {
+    "VITE_API_BASE_URL": {
+      "description": "The base URL for the Estonian Anagram Finder API",
+      "value": "https://anagram-finder-api-9dc5f9cdb303.herokuapp.com/api/v1",
+      "required": true
+    },
+    "NODE_ENV": {
+      "description": "Node environment",
+      "value": "production"
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "stack": "heroku-22"
+}
