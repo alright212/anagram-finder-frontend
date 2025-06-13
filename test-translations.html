@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Translation Test</title>
+  </head>
+  <body>
+    <h1>Testing API Translations</h1>
+    <div id="results"></div>
+
+    <script>
+      async function testTranslations() {
+        const results = document.getElementById("results");
+
+        try {
+          // Test English translations
+          const enResponse = await fetch(
+            "https://anagram-finder-api-9dc5f9cdb303.herokuapp.com/api/v1/locale/translations/api?locale=en"
+          );
+          const enData = await enResponse.json();
+
+          results.innerHTML += "<h2>English Translations (Success!)</h2>";
+          results.innerHTML +=
+            "<p>Navigation Title: " +
+            enData.data.translations.navigation.title +
+            "</p>";
+          results.innerHTML +=
+            "<p>Navigation Subtitle: " +
+            enData.data.translations.navigation.subtitle +
+            "</p>";
+
+          // Test Estonian translations
+          const etResponse = await fetch(
+            "https://anagram-finder-api-9dc5f9cdb303.herokuapp.com/api/v1/locale/translations/api?locale=et"
+          );
+          const etData = await etResponse.json();
+
+          results.innerHTML += "<h2>Estonian Translations (Success!)</h2>";
+          results.innerHTML +=
+            "<p>Navigation Title: " +
+            etData.data.translations.navigation.title +
+            "</p>";
+          results.innerHTML +=
+            "<p>Navigation Subtitle: " +
+            etData.data.translations.navigation.subtitle +
+            "</p>";
+        } catch (error) {
+          results.innerHTML += "<h2>Error:</h2><p>" + error.message + "</p>";
+        }
+      }
+
+      testTranslations();
+    </script>
+  </body>
+</html>

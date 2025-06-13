@@ -23,16 +23,20 @@ const ApiBackend = {
       );
 
       // Fetch translations from our API service
-      const { translation } = await fetchTranslations(lng, false); // Use cache when possible
+      // fetchTranslations is expected to return a TranslationSet: { translation: { actual_translations_here } }
+      const translationSet = await fetchTranslations(lng, false); // Use cache when possible
+
+      // The actual translations object is under the 'translation' property of TranslationSet
+      const translationsObject = translationSet.translation;
 
       console.log(`ApiBackend: Successfully loaded translations for ${lng}`);
       console.log(
         `ApiBackend: Available top-level keys:`,
-        Object.keys(translation)
+        Object.keys(translationsObject)
       );
 
-      // Return the flattened translation object for the namespace
-      callback(null, translation);
+      // Return the extracted translations object for the namespace
+      callback(null, translationsObject);
     } catch (error) {
       console.error(
         `ApiBackend: Failed to load translations for ${lng}:`,
