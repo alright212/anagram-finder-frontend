@@ -29,6 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { apiService } from "../services/api";
 import type { AnagramResponse } from "../types/api";
+import { useAppState } from "../hooks/useAppState";
 
 // Form schema
 const searchSchema = z.object({
@@ -42,12 +43,12 @@ type SearchFormData = z.infer<typeof searchSchema>;
 
 const AnagramSearchPage: React.FC = () => {
   const { t } = useTranslation();
+  const { state, dispatch } = useAppState();
   const [searchResult, setSearchResult] = useState<AnagramResponse | null>(
     null
   );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [searchHistory, setSearchHistory] = useState<string[]>([]);
 
   const {
     register,
@@ -74,12 +75,10 @@ const AnagramSearchPage: React.FC = () => {
       if (response.success && response.data) {
         setSearchResult(response.data);
         // Add to search history
-        setSearchHistory((prev) =>
-          [
-            data.word.trim().toLowerCase(),
-            ...prev.filter((w) => w !== data.word.trim().toLowerCase()),
-          ].slice(0, 10)
-        );
+        dispatch({
+          type: "ADD_TO_SEARCH_HISTORY",
+          payload: data.word.trim().toLowerCase(),
+        });
         // Don't show error if no anagrams found - this is a valid result
       } else {
         setError(response.error?.message || t("errors.networkError"));
@@ -142,14 +141,14 @@ const AnagramSearchPage: React.FC = () => {
       </Card>
 
       {/* Search History */}
-      {searchHistory.length > 0 && (
+      {state.searchHistory.length > 0 && (
         <Card>
           <CardHeader>
             <Heading size="md">{t("search.recentSearches")}</Heading>
           </CardHeader>
           <CardBody>
             <HStack gap={2} wrap="wrap">
-              {searchHistory.map((word, index) => (
+              {state.searchHistory.map((word, index) => (
                 <Badge
                   key={index}
                   variant="outline"
