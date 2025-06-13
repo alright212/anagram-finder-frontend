@@ -19,7 +19,7 @@ class ApiService {
     this.client = axios.create({
       baseURL:
         baseURL ||
-        import.meta.env.VITE_API_BASE_URL ||
+        (typeof import.meta !== 'undefined' && import.meta?.env?.VITE_API_BASE_URL) ||
         "https://anagram-finder-api-9dc5f9cdb303.herokuapp.com/api/v1",
       headers: {
         "Content-Type": "application/json",

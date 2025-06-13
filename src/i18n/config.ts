@@ -97,7 +97,7 @@ i18n
     fallbackLng: "en", // Fallback to English if keys missing
     ns: ["translation"], // Namespace
     defaultNS: "translation", // Default namespace
-    debug: import.meta.env.DEV, // Debug mode in development
+    debug: typeof window !== 'undefined' && import.meta?.env?.DEV === true, // Debug mode in development
     interpolation: {
       escapeValue: false, // React already does XSS protection
     },
