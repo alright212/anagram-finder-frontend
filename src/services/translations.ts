@@ -45,11 +45,17 @@ export const fetchTranslations = async (
     const response = await apiService.getTranslations("api", language);
     console.log(`API response for ${language}:`, response);
 
-    if (response.success && response.data?.data) {
-      console.log(`Successfully received translations for ${language}`);
+    // Check if the API response contains the expected translation data
+    if (response && response.data && response.data.translations) {
+      console.log(
+        `Successfully received translations for ${language} from API structure`
+      );
 
-      // Structure the translations in the expected format for i18next
-      const apiTranslations = response.data.data as Record<string, unknown>;
+      // Extract translations directly from response.data.translations
+      const apiTranslations = response.data.translations as Record<
+        string,
+        unknown
+      >;
       const translations: TranslationSet = {
         translation: structureApiTranslations(apiTranslations),
       };
@@ -78,7 +84,7 @@ export const fetchTranslations = async (
       return translations;
     } else {
       console.warn(
-        `API returned unsuccessful response for ${language}:`,
+        `API response structure for ${language} was not as expected, or data.translations is missing. Response:`,
         response
       );
       // Return minimal fallback instead of comprehensive hardcoded translations
