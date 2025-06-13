@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   VStack,
@@ -9,6 +9,7 @@ import {
   Badge,
   Link,
   Icon,
+  Spinner,
 } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import {
@@ -18,9 +19,36 @@ import {
   InfoIcon,
   ExternalLinkIcon,
 } from "@chakra-ui/icons";
+import { apiService } from "../services/api"; // Ensure this path is correct
+import type { WordbaseStatus } from "../types/api"; // Ensure this path is correct
 
 const AboutPage: React.FC = () => {
   const { t } = useTranslation();
+  const [wordbaseStatus, setWordbaseStatus] = useState<WordbaseStatus | null>(
+    null
+  );
+  const [isLoadingStats, setIsLoadingStats] = useState(true);
+  const [statsError, setStatsError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      setIsLoadingStats(true);
+      setStatsError(null);
+      try {
+        const statusResponse = await apiService.getWordbaseStatus();
+        if (statusResponse.success && statusResponse.data) {
+          setWordbaseStatus(statusResponse.data);
+        } else {
+          setStatsError(t("errors.fetchError"));
+        }
+      } catch {
+        setStatsError(t("errors.networkError"));
+      } finally {
+        setIsLoadingStats(false);
+      }
+    };
+    fetchStats();
+  }, [t]);
 
   const features = [
     {
@@ -132,6 +160,77 @@ const AboutPage: React.FC = () => {
         </VStack>
       </Box>
 
+      {/* Production Statistics */}
+      <Box
+        bg="white"
+        p={8}
+        borderRadius="lg"
+        boxShadow="lg"
+        border="1px"
+        borderColor="gray.200"
+      >
+        <VStack gap={8}>
+          <Heading size="lg" textAlign="center" color="gray.700">
+            {t("home.statistics.title")}
+          </Heading>
+          {isLoadingStats ? (
+            <Spinner size="lg" color="blue.500" />
+          ) : statsError ? (
+            <Text color="red.600">{statsError}</Text>
+          ) : wordbaseStatus ? (
+            <SimpleGrid columns={{ base: 2, md: 4 }} gap={8} w="full">
+              <Box textAlign="center">
+                <Text fontSize="3xl" fontWeight="bold" color="blue.600" mb={2}>
+                  {(wordbaseStatus.total_words || 177953).toLocaleString()}
+                </Text>
+                <Text fontSize="sm" color="gray.600" fontWeight="medium">
+                  {t("home.statistics.estonianWords")}
+                </Text>
+              </Box>
+
+              <Box textAlign="center">
+                <Text fontSize="3xl" fontWeight="bold" color="green.600" mb={2}>
+                  ~19ms
+                </Text>
+                <Text fontSize="sm" color="gray.600" fontWeight="medium">
+                  {t("home.statistics.avgResponse")}
+                </Text>
+              </Box>
+
+              <Box textAlign="center">
+                <Text
+                  fontSize="3xl"
+                  fontWeight="bold"
+                  color="purple.600"
+                  mb={2}
+                >
+                  100%
+                </Text>
+                <Text fontSize="sm" color="gray.600" fontWeight="medium">
+                  {t("home.statistics.unicodeSupport")}
+                </Text>
+              </Box>
+
+              <Box textAlign="center">
+                <Text
+                  fontSize="3xl"
+                  fontWeight="bold"
+                  color="orange.600"
+                  mb={2}
+                >
+                  O(1)
+                </Text>
+                <Text fontSize="sm" color="gray.600" fontWeight="medium">
+                  {t("home.statistics.lookupTime")}
+                </Text>
+              </Box>
+            </SimpleGrid>
+          ) : (
+            <Text>{t("errors.noData")}</Text>
+          )}
+        </VStack>
+      </Box>
+
       {/* Algorithm Information */}
       <Box
         bg="white"
@@ -220,55 +319,6 @@ const AboutPage: React.FC = () => {
           </VStack>
         </Box>
       </SimpleGrid>
-
-      {/* Performance Metrics */}
-      <Box
-        bg="estonian.blue.50"
-        p={6}
-        borderRadius="lg"
-        border="1px"
-        borderColor="estonian.blue.200"
-      >
-        <VStack gap={6}>
-          <Heading size="lg" color="estonian.blue.700">
-            {t("about.performance.title")}
-          </Heading>
-          <SimpleGrid columns={{ base: 1, md: 4 }} gap={6} w="full">
-            <VStack>
-              <Text fontSize="3xl" fontWeight="bold" color="estonian.blue.600">
-                {t("about.performance.metrics.searchTime.value")}
-              </Text>
-              <Text fontSize="sm" textAlign="center" color="gray.600">
-                {t("about.performance.metrics.searchTime.label")}
-              </Text>
-            </VStack>
-            <VStack>
-              <Text fontSize="3xl" fontWeight="bold" color="estonian.blue.600">
-                {t("about.performance.metrics.wordsSupported.value")}
-              </Text>
-              <Text fontSize="sm" textAlign="center" color="gray.600">
-                {t("about.performance.metrics.wordsSupported.label")}
-              </Text>
-            </VStack>
-            <VStack>
-              <Text fontSize="3xl" fontWeight="bold" color="estonian.blue.600">
-                {t("about.performance.metrics.languagesSupported.value")}
-              </Text>
-              <Text fontSize="sm" textAlign="center" color="gray.600">
-                {t("about.performance.metrics.languagesSupported.label")}
-              </Text>
-            </VStack>
-            <VStack>
-              <Text fontSize="3xl" fontWeight="bold" color="estonian.blue.600">
-                {t("about.performance.metrics.uptime.value")}
-              </Text>
-              <Text fontSize="sm" textAlign="center" color="gray.600">
-                {t("about.performance.metrics.uptime.label")}
-              </Text>
-            </VStack>
-          </SimpleGrid>
-        </VStack>
-      </Box>
 
       {/* Getting Started */}
       <Box

@@ -17,17 +17,21 @@ import { z } from "zod";
 import { apiService } from "../services/api";
 import type { WordbaseStatus, WordbaseImportResponse } from "../types/api";
 
-// Form validation schema
-const importSchema = z.object({
-  words: z.string().min(1, "Please enter some words"),
-  format: z.enum(["text", "json"]),
-  language: z.enum(["et", "en", "de", "fr"]),
-});
-
-type ImportFormData = z.infer<typeof importSchema>;
+type ImportFormData = {
+  words: string;
+  format: "text" | "json";
+  language: "et" | "en" | "de" | "fr";
+};
 
 const WordbaseImportPage: React.FC = () => {
   const { t } = useTranslation();
+
+  // Create validation schema inside component to access translation
+  const importSchema = z.object({
+    words: z.string().min(1, t("wordbase.importForm.validation.wordsRequired")),
+    format: z.enum(["text", "json"]),
+    language: z.enum(["et", "en", "de", "fr"]),
+  });
   const [currentStatus, setCurrentStatus] = useState<WordbaseStatus | null>(
     null
   );
