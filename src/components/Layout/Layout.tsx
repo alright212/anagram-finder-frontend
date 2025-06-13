@@ -3,15 +3,16 @@ import {
   Box,
   Container,
   Flex,
-  Heading,
   Text,
   Button,
   HStack,
   VStack,
   Spacer,
+  Image, // Add Image import
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import logo from "../../assets/eestianagrammideleidjalogo.png"; // Import the logo
 
 interface LayoutProps {
   children: ReactNode;
@@ -48,18 +49,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Container maxW="container.xl" py={4}>
           <Flex align="center">
             <VStack align="start" gap={0}>
-              <Heading
+              <Image
+                src={logo}
+                alt={t("navigation.title")}
                 onClick={() => navigate("/")}
-                size="lg"
-                color="blue.500"
                 cursor="pointer"
-                _hover={{ textDecoration: "none", color: "blue.600" }}
-              >
-                {t("navigation.title")}
-              </Heading>
-              <Text fontSize="sm" color="gray.600">
+                height="62px"
+                _hover={{ opacity: 0.8 }}
+              />
+              {/* <Text fontSize="sm" color="gray.600">
                 {t("navigation.subtitle")}
-              </Text>
+              </Text> */}
             </VStack>
 
             <Spacer />
