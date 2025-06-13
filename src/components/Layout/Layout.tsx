@@ -8,11 +8,15 @@ import {
   HStack,
   VStack,
   Spacer,
-  Image, // Add Image import
+  Image,
+  IconButton,
+  Collapse,
+  useDisclosure,
 } from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import logo from "../../assets/eestianagrammideleidjalogo.png"; // Import the logo
+import logo from "../../assets/eestianagrammideleidjalogo.png";
 
 interface LayoutProps {
   children: ReactNode;
@@ -22,11 +26,19 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { t, i18n } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
+  const { isOpen, onToggle } = useDisclosure();
 
   const handleLanguageChange = (lng: string) => {
     i18n.changeLanguage(lng);
     // Persist language selection to localStorage
     localStorage.setItem("i18nextLng", lng);
+  };
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    if (isOpen) {
+      onToggle(); // Close mobile menu after navigation
+    }
   };
 
   const navItems = [
@@ -57,14 +69,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 height="62px"
                 _hover={{ opacity: 0.8 }}
               />
-              {/* <Text fontSize="sm" color="gray.600">
-                {t("navigation.subtitle")}
-              </Text> */}
             </VStack>
 
             <Spacer />
 
-            {/* Navigation */}
+            {/* Desktop Navigation */}
             <HStack gap={4} display={{ base: "none", md: "flex" }}>
               {navItems.map((item) => (
                 <Button
@@ -81,8 +90,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             <Spacer />
 
-            {/* Language Selector */}
-            <HStack gap={2}>
+            {/* Desktop Language Selector */}
+            <HStack gap={2} display={{ base: "none", md: "flex" }}>
               <Button
                 size="sm"
                 variant={i18n.language === "et" ? "solid" : "outline"}
@@ -116,8 +125,84 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 🇫🇷
               </Button>
             </HStack>
+
+            {/* Mobile Menu Button */}
+            <IconButton
+              display={{ base: "flex", md: "none" }}
+              onClick={onToggle}
+              icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+              variant="ghost"
+              aria-label="Toggle Navigation"
+              size="sm"
+            />
           </Flex>
         </Container>
+
+        {/* Mobile Menu */}
+        <Collapse in={isOpen} animateOpacity>
+          <Box pb={4} display={{ md: "none" }}>
+            <Container maxW="container.xl">
+              <VStack spacing={3} align="stretch">
+                {/* Mobile Navigation Items */}
+                {navItems.map((item) => (
+                  <Button
+                    key={item.path}
+                    onClick={() => handleNavigation(item.path)}
+                    variant={
+                      location.pathname === item.path ? "solid" : "ghost"
+                    }
+                    colorScheme="blue"
+                    size="sm"
+                    justifyContent="flex-start"
+                  >
+                    {item.label}
+                  </Button>
+                ))}
+
+                {/* Mobile Language Selector */}
+                <Box pt={2}>
+                  <Text fontSize="sm" color="gray.600" mb={2}>
+                    {t("common.language") || "Language"}
+                  </Text>
+                  <HStack gap={2} flexWrap="wrap">
+                    <Button
+                      size="sm"
+                      variant={i18n.language === "et" ? "solid" : "outline"}
+                      onClick={() => handleLanguageChange("et")}
+                      aria-label="Eesti keel"
+                    >
+                      🇪🇪
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={i18n.language === "en" ? "solid" : "outline"}
+                      onClick={() => handleLanguageChange("en")}
+                      aria-label="English"
+                    >
+                      🇬🇧
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={i18n.language === "de" ? "solid" : "outline"}
+                      onClick={() => handleLanguageChange("de")}
+                      aria-label="Deutsch"
+                    >
+                      🇩🇪
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={i18n.language === "fr" ? "solid" : "outline"}
+                      onClick={() => handleLanguageChange("fr")}
+                      aria-label="Français"
+                    >
+                      🇫🇷
+                    </Button>
+                  </HStack>
+                </Box>
+              </VStack>
+            </Container>
+          </Box>
+        </Collapse>
       </Box>
 
       {/* Main Content */}
