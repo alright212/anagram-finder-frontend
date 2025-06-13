@@ -287,7 +287,9 @@ const AboutPage: React.FC = () => {
                 1
               </Badge>
               <VStack align="start" gap={1}>
-                <Text fontWeight="semibold">{t("about.gettingStarted.steps.importDatabase.title")}</Text>
+                <Text fontWeight="semibold">
+                  {t("about.gettingStarted.steps.importDatabase.title")}
+                </Text>
                 <Text fontSize="sm" color="gray.600">
                   {t("about.gettingStarted.steps.importDatabase.description")}
                 </Text>
@@ -298,7 +300,9 @@ const AboutPage: React.FC = () => {
                 2
               </Badge>
               <VStack align="start" gap={1}>
-                <Text fontWeight="semibold">{t("about.gettingStarted.steps.searchAnagrams.title")}</Text>
+                <Text fontWeight="semibold">
+                  {t("about.gettingStarted.steps.searchAnagrams.title")}
+                </Text>
                 <Text fontSize="sm" color="gray.600">
                   {t("about.gettingStarted.steps.searchAnagrams.description")}
                 </Text>
@@ -309,7 +313,9 @@ const AboutPage: React.FC = () => {
                 3
               </Badge>
               <VStack align="start" gap={1}>
-                <Text fontWeight="semibold">{t("about.gettingStarted.steps.exploreAnalyze.title")}</Text>
+                <Text fontWeight="semibold">
+                  {t("about.gettingStarted.steps.exploreAnalyze.title")}
+                </Text>
                 <Text fontSize="sm" color="gray.600">
                   {t("about.gettingStarted.steps.exploreAnalyze.description")}
                 </Text>
@@ -336,13 +342,14 @@ const AboutPage: React.FC = () => {
           <VStack align="start" gap={2}>
             <Text fontSize="sm">{t("about.apiDocumentation.linkLabel")}</Text>
             <Link
-              href="/api/documentation"
+              href="https://anagram-finder-api-9dc5f9cdb303.herokuapp.com/api/documentation"
               color="estonian.blue.500"
               fontSize="sm"
               target="_blank"
               rel="noopener noreferrer"
             >
-              {t("about.apiDocumentation.viewDocs")} <ExternalLinkIcon mx="2px" />
+              {t("about.apiDocumentation.viewDocs")}{" "}
+              <ExternalLinkIcon mx="2px" />
             </Link>
           </VStack>
         </VStack>

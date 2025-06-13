@@ -93,7 +93,7 @@ i18n
   .use(ApiBackend)
   .use(initReactI18next)
   .init({
-    lng: "et", // Default language
+    lng: localStorage.getItem("i18nextLng") || "et", // Default language, try localStorage first
     fallbackLng: "en", // Fallback to English if keys missing
     ns: ["translation"], // Namespace
     defaultNS: "translation", // Default namespace
@@ -108,5 +108,11 @@ i18n
     // Wait for API to load before considering i18n ready
     initImmediate: false,
   });
+
+// Add event listener to automatically persist language changes
+i18n.on('languageChanged', (lng: string) => {
+  console.log(`Language changed to ${lng}, saving to localStorage`);
+  localStorage.setItem('i18nextLng', lng);
+});
 
 export default i18n;

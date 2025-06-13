@@ -24,6 +24,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const handleLanguageChange = (lng: string) => {
     i18n.changeLanguage(lng);
+    // Persist language selection to localStorage
+    localStorage.setItem("i18nextLng", lng);
   };
 
   const navItems = [
@@ -85,15 +87,33 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 size="sm"
                 variant={i18n.language === "et" ? "solid" : "outline"}
                 onClick={() => handleLanguageChange("et")}
+                aria-label="Eesti keel"
               >
-                EST
+                🇪🇪
               </Button>
               <Button
                 size="sm"
                 variant={i18n.language === "en" ? "solid" : "outline"}
                 onClick={() => handleLanguageChange("en")}
+                aria-label="English"
               >
-                ENG
+                🇬🇧
+              </Button>
+              <Button
+                size="sm"
+                variant={i18n.language === "de" ? "solid" : "outline"}
+                onClick={() => handleLanguageChange("de")}
+                aria-label="Deutsch"
+              >
+                🇩🇪
+              </Button>
+              <Button
+                size="sm"
+                variant={i18n.language === "fr" ? "solid" : "outline"}
+                onClick={() => handleLanguageChange("fr")}
+                aria-label="Français"
+              >
+                🇫🇷
               </Button>
             </HStack>
           </Flex>

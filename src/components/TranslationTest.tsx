@@ -44,6 +44,8 @@ const TranslationTest: React.FC = () => {
   const changeLanguage = (lng: string) => {
     console.log(`🌐 Changing language to: ${lng}`);
     i18n.changeLanguage(lng);
+    // Persist language selection to localStorage
+    localStorage.setItem("i18nextLng", lng);
   };
 
   return (
