@@ -24,70 +24,68 @@ const AboutPage: React.FC = () => {
 
   const features = [
     {
-      title: t("about.features.items.0"),
-      description: "Optimized algorithms for instant anagram detection",
+      title: t("about.features.items.fastSearch"),
+      description: t("about.features.items.fastSearchDescription"),
       icon: TimeIcon,
     },
     {
-      title: t("about.features.items.1"),
-      description: "Support for Estonian, English, German, and French",
+      title: t("about.features.items.multilingualSupport"),
+      description: t("about.features.items.multilingualSupportDescription"),
       icon: StarIcon,
     },
     {
-      title: t("about.features.items.2"),
-      description: "Import your own word lists and customize the database",
+      title: t("about.features.items.customDatabase"),
+      description: t("about.features.items.customDatabaseDescription"),
       icon: CheckCircleIcon,
     },
     {
-      title: t("about.features.items.3"),
-      description: "Built with React 18, TypeScript, and Chakra UI",
+      title: t("about.features.items.modernInterface"),
+      description: t("about.features.items.modernInterfaceDescription"),
       icon: InfoIcon,
     },
     {
-      title: t("about.features.items.4"),
-      description: "View search performance and word database statistics",
+      title: t("about.features.items.realTimeStats"),
+      description: t("about.features.items.realTimeStatsDescription"),
       icon: StarIcon,
     },
   ];
 
   const techStack = {
     frontend: [
-      "React 18 with TypeScript",
-      "Chakra UI for modern design",
-      "React Router for navigation",
-      "React Hook Form for forms",
-      "i18next for internationalization",
-      "Axios for API communication",
-      "Zod for validation",
+      t("about.techStack.frontend.items.reactTypeScript"),
+      t("about.techStack.frontend.items.chakraUI"),
+      t("about.techStack.frontend.items.reactRouter"),
+      t("about.techStack.frontend.items.reactHookForm"),
+      t("about.techStack.frontend.items.i18next"),
+      t("about.techStack.frontend.items.axios"),
+      t("about.techStack.frontend.items.zod"),
     ],
     backend: [
-      "Laravel 11 PHP Framework",
-      "RESTful API with Swagger docs",
-      "SQLite database",
-      "Multi-language support",
-      "Optimized anagram algorithms",
-      "Comprehensive error handling",
-      "Performance monitoring",
+      t("about.techStack.backend.items.laravel"),
+      t("about.techStack.backend.items.restfulAPI"),
+      t("about.techStack.backend.items.sqlite"),
+      t("about.techStack.backend.items.multiLanguage"),
+      t("about.techStack.backend.items.algorithms"),
+      t("about.techStack.backend.items.errorHandling"),
+      t("about.techStack.backend.items.monitoring"),
     ],
   };
 
   const algorithms = [
     {
-      name: "Character Frequency Analysis",
-      description:
-        "Uses character frequency counting for efficient anagram detection",
-      complexity: "O(n + m)",
+      name: t("about.algorithm.types.characterFrequency.name"),
+      description: t("about.algorithm.types.characterFrequency.description"),
+      complexity: t("about.algorithm.types.characterFrequency.complexity"),
     },
     {
-      name: "Sorting-based Comparison",
-      description:
-        "Sorts characters to find anagrams through string comparison",
-      complexity: "O(n log n)",
+      name: t("about.algorithm.types.sortingBased.name"),
+      description: t("about.algorithm.types.sortingBased.description"),
+      complexity: t("about.algorithm.types.sortingBased.complexity"),
     },
     {
-      name: "Hash-based Lookup",
-      description: "Pre-computed hash tables for ultra-fast anagram retrieval",
-      complexity: "O(1) lookup",
+      name: t("about.algorithm.types.hashBased.name"),
+      description: t("about.algorithm.types.hashBased.description"),
+      complexity: t("about.algorithm.types.hashBased.complexity"),
     },
   ];
 
@@ -189,7 +187,7 @@ const AboutPage: React.FC = () => {
         >
           <VStack gap={4} align="start">
             <Heading size="md" color="estonian.blue.500">
-              Frontend Technologies
+              {t("about.techStack.frontend.title")}
             </Heading>
             <VStack align="start" gap={2}>
               {techStack.frontend.map((tech, index) => (
@@ -210,7 +208,7 @@ const AboutPage: React.FC = () => {
         >
           <VStack gap={4} align="start">
             <Heading size="md" color="estonian.blue.500">
-              Backend Technologies
+              {t("about.techStack.backend.title")}
             </Heading>
             <VStack align="start" gap={2}>
               {techStack.backend.map((tech, index) => (
@@ -233,39 +231,39 @@ const AboutPage: React.FC = () => {
       >
         <VStack gap={6}>
           <Heading size="lg" color="estonian.blue.700">
-            Performance Highlights
+            {t("about.performance.title")}
           </Heading>
           <SimpleGrid columns={{ base: 1, md: 4 }} gap={6} w="full">
             <VStack>
               <Text fontSize="3xl" fontWeight="bold" color="estonian.blue.600">
-                &lt;100ms
+                {t("about.performance.metrics.searchTime.value")}
               </Text>
               <Text fontSize="sm" textAlign="center" color="gray.600">
-                Average search time
+                {t("about.performance.metrics.searchTime.label")}
               </Text>
             </VStack>
             <VStack>
               <Text fontSize="3xl" fontWeight="bold" color="estonian.blue.600">
-                500K+
+                {t("about.performance.metrics.wordsSupported.value")}
               </Text>
               <Text fontSize="sm" textAlign="center" color="gray.600">
-                Words supported
+                {t("about.performance.metrics.wordsSupported.label")}
               </Text>
             </VStack>
             <VStack>
               <Text fontSize="3xl" fontWeight="bold" color="estonian.blue.600">
-                4
+                {t("about.performance.metrics.languagesSupported.value")}
               </Text>
               <Text fontSize="sm" textAlign="center" color="gray.600">
-                Languages supported
+                {t("about.performance.metrics.languagesSupported.label")}
               </Text>
             </VStack>
             <VStack>
               <Text fontSize="3xl" fontWeight="bold" color="estonian.blue.600">
-                99.9%
+                {t("about.performance.metrics.uptime.value")}
               </Text>
               <Text fontSize="sm" textAlign="center" color="gray.600">
-                Uptime reliability
+                {t("about.performance.metrics.uptime.label")}
               </Text>
             </VStack>
           </SimpleGrid>
@@ -282,17 +280,16 @@ const AboutPage: React.FC = () => {
         borderColor="gray.200"
       >
         <VStack gap={6} align="start">
-          <Heading size="lg">Getting Started</Heading>
+          <Heading size="lg">{t("about.gettingStarted.title")}</Heading>
           <VStack gap={4} align="start" w="full">
             <HStack align="start" gap={4}>
               <Badge colorScheme="blue" size="lg" borderRadius="full" px={3}>
                 1
               </Badge>
               <VStack align="start" gap={1}>
-                <Text fontWeight="semibold">Import Word Database</Text>
+                <Text fontWeight="semibold">{t("about.gettingStarted.steps.importDatabase.title")}</Text>
                 <Text fontSize="sm" color="gray.600">
-                  Start by importing a word list through the Import page. You
-                  can use the default Estonian wordlist or upload your own.
+                  {t("about.gettingStarted.steps.importDatabase.description")}
                 </Text>
               </VStack>
             </HStack>
@@ -301,10 +298,9 @@ const AboutPage: React.FC = () => {
                 2
               </Badge>
               <VStack align="start" gap={1}>
-                <Text fontWeight="semibold">Search for Anagrams</Text>
+                <Text fontWeight="semibold">{t("about.gettingStarted.steps.searchAnagrams.title")}</Text>
                 <Text fontSize="sm" color="gray.600">
-                  Enter any word in the search page to find all possible
-                  anagrams instantly using our optimized algorithms.
+                  {t("about.gettingStarted.steps.searchAnagrams.description")}
                 </Text>
               </VStack>
             </HStack>
@@ -313,10 +309,9 @@ const AboutPage: React.FC = () => {
                 3
               </Badge>
               <VStack align="start" gap={1}>
-                <Text fontWeight="semibold">Explore and Analyze</Text>
+                <Text fontWeight="semibold">{t("about.gettingStarted.steps.exploreAnalyze.title")}</Text>
                 <Text fontSize="sm" color="gray.600">
-                  Use the statistics page to analyze your wordbase and view
-                  search history and discover word patterns.
+                  {t("about.gettingStarted.steps.exploreAnalyze.description")}
                 </Text>
               </VStack>
             </HStack>
@@ -334,13 +329,12 @@ const AboutPage: React.FC = () => {
         borderColor="gray.200"
       >
         <VStack gap={4} align="start">
-          <Heading size="lg">API Documentation</Heading>
+          <Heading size="lg">{t("about.apiDocumentation.title")}</Heading>
           <Text fontSize="sm" color="gray.600">
-            This application uses a Laravel-based REST API with comprehensive
-            documentation available through Swagger/OpenAPI.
+            {t("about.apiDocumentation.description")}
           </Text>
           <VStack align="start" gap={2}>
-            <Text fontSize="sm">API Documentation:</Text>
+            <Text fontSize="sm">{t("about.apiDocumentation.linkLabel")}</Text>
             <Link
               href="/api/documentation"
               color="estonian.blue.500"
@@ -348,7 +342,7 @@ const AboutPage: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              View API Docs <ExternalLinkIcon mx="2px" />
+              {t("about.apiDocumentation.viewDocs")} <ExternalLinkIcon mx="2px" />
             </Link>
           </VStack>
         </VStack>

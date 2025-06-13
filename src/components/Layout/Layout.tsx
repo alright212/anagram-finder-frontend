@@ -117,8 +117,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Container maxW="container.xl">
           <Flex align="center" justify="center">
             <Text fontSize="sm" color="gray.600">
-              © 2025 Estonian Anagram Finder. Made with ❤️ for Estonian
-              language.
+              {t("footer.copyright")}
             </Text>
           </Flex>
         </Container>

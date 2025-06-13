@@ -61,7 +61,6 @@ const HomePage: React.FC = () => {
       </VStack>
     );
   }
-
   return (
     <VStack gap={12} align="stretch">
       {/* Hero Section */}
@@ -120,13 +119,13 @@ const HomePage: React.FC = () => {
             <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6} w="full">
               <Box textAlign="center">
                 <Text fontSize="sm" color="gray.500">
-                  Total Words
+                  {t("home.statistics.totalWords")}
                 </Text>
                 <Text fontSize="2xl" fontWeight="bold" color="blue.500">
                   {(wordbaseStatus.total_words || 0).toLocaleString()}
                 </Text>
                 <Text fontSize="xs" color="gray.400">
-                  in database
+                  {t("home.statistics.inDatabase")}
                 </Text>
               </Box>
 
@@ -134,7 +133,7 @@ const HomePage: React.FC = () => {
                 <>
                   <Box textAlign="center">
                     <Text fontSize="sm" color="gray.500">
-                      Unique Anagrams
+                      {t("home.statistics.uniqueAnagrams")}
                     </Text>
                     <Text fontSize="2xl" fontWeight="bold" color="teal.500">
                       {(
@@ -142,25 +141,26 @@ const HomePage: React.FC = () => {
                       ).toLocaleString()}
                     </Text>
                     <Text fontSize="xs" color="gray.400">
-                      combinations
+                      {t("home.statistics.combinations")}
                     </Text>
                   </Box>
 
                   <Box textAlign="center">
                     <Text fontSize="sm" color="gray.500">
-                      Most Anagrams
+                      {t("home.statistics.mostAnagrams")}
                     </Text>
                     <Text fontSize="2xl" fontWeight="bold" color="orange.500">
                       {anagramStats.most_anagrams?.count || 0}
                     </Text>
                     <Text fontSize="xs" color="gray.400">
-                      for "{anagramStats.most_anagrams?.word || "N/A"}"
+                      {t("home.statistics.for")} "
+                      {anagramStats.most_anagrams?.word || "N/A"}"
                     </Text>
                   </Box>
 
                   <Box textAlign="center">
                     <Text fontSize="sm" color="gray.500">
-                      Avg Search Time
+                      {t("home.statistics.avgSearchTime")}
                     </Text>
                     <Text fontSize="2xl" fontWeight="bold" color="green.500">
                       {(
@@ -169,7 +169,7 @@ const HomePage: React.FC = () => {
                       ms
                     </Text>
                     <Text fontSize="xs" color="gray.400">
-                      per search
+                      {t("home.statistics.perSearch")}
                     </Text>
                   </Box>
                 </>
@@ -198,10 +198,10 @@ const HomePage: React.FC = () => {
           >
             <VStack gap={4} textAlign="center">
               <Text fontSize="3xl">🔍</Text>
-              <Heading size="md">{t("about.features.items.0")}</Heading>
-              <Text color="gray.600">
-                Optimized algorithms for instant anagram detection
-              </Text>
+              <Heading size="md">
+                {t("about.features.items.fastSearch")}
+              </Heading>
+              <Text color="gray.600">{t("home.features.fastSearch")}</Text>
               <Button
                 onClick={() => navigate("/search")}
                 colorScheme="blue"
@@ -226,10 +226,10 @@ const HomePage: React.FC = () => {
           >
             <VStack gap={4} textAlign="center">
               <Text fontSize="3xl">📥</Text>
-              <Heading size="md">{t("about.features.items.2")}</Heading>
-              <Text color="gray.600">
-                Import your own word lists to customize the search database
-              </Text>
+              <Heading size="md">
+                {t("about.features.items.customDatabase")}
+              </Heading>
+              <Text color="gray.600">{t("home.features.importDatabase")}</Text>
               <Button
                 onClick={() => navigate("/import")}
                 colorScheme="blue"
@@ -254,10 +254,10 @@ const HomePage: React.FC = () => {
           >
             <VStack gap={4} textAlign="center">
               <Text fontSize="3xl">ℹ️</Text>
-              <Heading size="md">{t("about.features.items.3")}</Heading>
-              <Text color="gray.600">
-                Modern, responsive interface built with React and Chakra UI
-              </Text>
+              <Heading size="md">
+                {t("about.features.items.modernInterface")}
+              </Heading>
+              <Text color="gray.600">{t("home.features.modernInterface")}</Text>
               <Button
                 onClick={() => navigate("/about")}
                 colorScheme="blue"
@@ -296,11 +296,12 @@ const HomePage: React.FC = () => {
       ) : (
         <Box bg="teal.500" color="white" borderRadius="lg" p={6}>
           <VStack gap={4} textAlign="center">
-            <Heading size="md">Ready to Search!</Heading>
+            <Heading size="md">{t("home.readyToSearch")}</Heading>
             <Text>
-              Your word database is loaded with{" "}
-              {(wordbaseStatus.total_words || 0).toLocaleString()} words. Start
-              finding anagrams now!
+              {t("home.databaseLoaded").replace(
+                "{{count}}",
+                (wordbaseStatus.total_words || 0).toLocaleString()
+              )}
             </Text>
             <Button
               onClick={() => navigate("/search")}
@@ -308,7 +309,7 @@ const HomePage: React.FC = () => {
               color="teal.500"
               _hover={{ bg: "gray.100" }}
             >
-              Start Searching
+              {t("home.startSearching")}
             </Button>
           </VStack>
         </Box>

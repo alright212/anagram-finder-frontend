@@ -131,7 +131,7 @@ const WordbaseImportPage: React.FC = () => {
                   {(currentStatus.total_words || 0).toLocaleString()}
                 </Text>
                 <Text fontSize="sm" color="gray.500">
-                  Total Words
+                  {t("wordbase.statusLabels.total_words")}
                 </Text>
               </Box>
               <Box textAlign="center">
@@ -139,7 +139,7 @@ const WordbaseImportPage: React.FC = () => {
                   {currentStatus.languages_available?.length || 0}
                 </Text>
                 <Text fontSize="sm" color="gray.500">
-                  Languages
+                  {t("wordbase.statusLabels.languages")}
                 </Text>
               </Box>
               <Box textAlign="center">
@@ -149,7 +149,7 @@ const WordbaseImportPage: React.FC = () => {
                     : "N/A"}
                 </Text>
                 <Text fontSize="sm" color="gray.500">
-                  Last Updated
+                  {t("wordbase.statusLabels.last_updated")}
                 </Text>
               </Box>
             </SimpleGrid>
@@ -173,7 +173,7 @@ const WordbaseImportPage: React.FC = () => {
             <SimpleGrid columns={{ base: 1, md: 2 }} gap={4} w="full">
               <Box>
                 <Text mb={2} fontWeight="medium">
-                  Format
+                  {t("wordbase.importForm.format")}
                 </Text>
                 <select
                   {...register("format")}
@@ -185,14 +185,17 @@ const WordbaseImportPage: React.FC = () => {
                     fontSize: "16px",
                   }}
                 >
-                  <option value="text">Plain Text (one word per line)</option>
-                  <option value="json">JSON Array</option>
+                  <option value="text">
+                    {t("wordbase.formats.plaintext")} (
+                    {t("wordbase.import.instructions.plain_text")})
+                  </option>
+                  <option value="json">{t("wordbase.formats.json")}</option>
                 </select>
               </Box>
 
               <Box>
                 <Text mb={2} fontWeight="medium">
-                  Language
+                  {t("wordbase.importForm.language")}
                 </Text>
                 <select
                   {...register("language")}
@@ -204,17 +207,17 @@ const WordbaseImportPage: React.FC = () => {
                     fontSize: "16px",
                   }}
                 >
-                  <option value="et">Estonian (Eesti)</option>
-                  <option value="en">English</option>
-                  <option value="de">German (Deutsch)</option>
-                  <option value="fr">French (Français)</option>
+                  <option value="et">{t("wordbase.languages.et")}</option>
+                  <option value="en">{t("wordbase.languages.en")}</option>
+                  <option value="de">{t("wordbase.languages.de")}</option>
+                  <option value="fr">{t("wordbase.languages.fr")}</option>
                 </select>
               </Box>
             </SimpleGrid>
 
             <Box w="full">
               <Text mb={2} fontWeight="medium">
-                Words to Import
+                {t("wordbase.importForm.content")}
               </Text>
               <Textarea
                 {...register("words")}
@@ -324,27 +327,29 @@ const WordbaseImportPage: React.FC = () => {
       >
         <VStack gap={4} align="start">
           <Heading size="md" color="blue.700">
-            Import Instructions
+            {t("wordbase.import.instructions.title")}
           </Heading>
           <VStack align="start" gap={2} fontSize="sm" color="blue.600">
             <Text>
-              • <strong>Plain Text Format:</strong> Enter one word per line
+              • <strong>{t("wordbase.import.instructions.plain_text")}</strong>
             </Text>
             <Text>
-              • <strong>JSON Format:</strong> Provide an array of strings like
-              ["word1", "word2"]
+              • <strong>{t("wordbase.import.instructions.json_format")}</strong>
             </Text>
             <Text>
-              • <strong>Language Selection:</strong> Choose the appropriate
-              language for the words
+              •{" "}
+              <strong>
+                {t("wordbase.import.instructions.language_selection")}
+              </strong>
             </Text>
             <Text>
-              • <strong>Duplicates:</strong> Duplicate words will be
-              automatically skipped
+              • <strong>{t("wordbase.import.instructions.duplicates")}</strong>
             </Text>
             <Text>
-              • <strong>Processing Time:</strong> Large imports may take several
-              seconds
+              •{" "}
+              <strong>
+                {t("wordbase.import.instructions.processing_time")}
+              </strong>
             </Text>
           </VStack>
         </VStack>

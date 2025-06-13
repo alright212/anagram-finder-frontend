@@ -127,12 +127,13 @@ class ApiService {
   }
 
   async getTranslations(
-    namespace: string
+    namespace: string,
+    language?: string
   ): Promise<ApiResponse<TranslationData>> {
     try {
-      const response = await this.client.get(
-        `/locale/translations/${namespace}`
-      );
+      const url = `/locale/translations/${namespace}`;
+      const params = language ? { locale: language } : {};
+      const response = await this.client.get(url, { params });
       return response.data;
     } catch (error) {
       return this.handleError(error);

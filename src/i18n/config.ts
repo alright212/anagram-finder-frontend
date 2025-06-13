@@ -1,184 +1,112 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { fetchTranslations } from "../services/translations";
 
-// Estonian translations
-const et = {
-  translation: {
-    common: {
-      search: 'Otsing',
-      import: 'Import',
-      about: 'Teave',
-      home: 'Avaleht',
-      loading: 'Laadimine...',
-      error: 'Viga',
-      success: 'Õnnestus',
-      cancel: 'Loobu',
-      save: 'Salvesta',
-      delete: 'Kustuta',
-      edit: 'Muuda',
-      close: 'Sulge',
-    },
-    navigation: {
-      title: 'Eesti Anagrammide Otsija',
-      subtitle: 'Leia sõnade anagramme kiirelt ja lihtsalt',
-    },
-    search: {
-      title: 'Anagrammide Otsing',
-      placeholder: 'Sisesta sõna anagrammide leidmiseks...',
-      searchButton: 'Otsi Anagramme',
-      noResults: 'Anagramme ei leitud',
-      results: {
-        title: 'Leitud anagrammid:',
-        count: 'Kokku: {{count}} anagrammi',
-        executionTime: 'Otsinguaeg: {{time}}ms',
-        algorithm: 'Algoritm: {{algorithm}}',
-      },
-    },
-    wordbase: {
-      title: 'Sõnabaasi Import',
-      status: 'Sõnabaasi Olek',
-      totalWords: 'Kokku sõnu: {{count}}',
-      lastImport: 'Viimane import: {{date}}',
-      importForm: {
-        title: 'Impordi Sõnad',
-        content: 'Sõnad (iga sõna uuel real)',
-        format: 'Formaat',
-        language: 'Keel',
-        importButton: 'Impordi Sõnad',
-      },
-      formats: {
-        plaintext: 'Tavaline tekst',
-        json: 'JSON',
-      },
-      languages: {
-        et: 'Eesti keel',
-        en: 'Inglise keel',
-        de: 'Saksa keel',
-        fr: 'Prantsuse keel',
-      },
-    },
-    about: {
-      title: 'Anagrammide Otsija Kohta',
-      description: 'See rakendus võimaldab teil leida eesti sõnade anagramme kasutades täiustatud algoritme.',
-      features: {
-        title: 'Omadused:',
-        items: [
-          'Kiire anagrammide otsing',
-          'Mitmekeelne tugi',
-          'Kohandatav sõnabaas',
-          'Moodne kasutajaliides',
-          'Reaalajas statistika',
-        ],
-      },
-      algorithm: {
-        title: 'Algoritm',
-        description: 'Kasutame optimeeritud algoritme, mis tagavad kiire ja täpse anagrammide leidmise.',
-      },
-    },
-    errors: {
-      networkError: 'Võrguühenduse viga',
-      serverError: 'Serveri viga',
-      invalidInput: 'Vigane sisend',
-      wordNotFound: 'Sõna ei leitud',
-      importFailed: 'Import ebaõnnestus',
-    },
+/**
+ * Custom i18next backend that loads translations from our API
+ * This replaces the need for local JSON files and ensures all translations come from the API
+ */
+const ApiBackend = {
+  type: "backend" as const,
+
+  /**
+   * Called by i18next when it needs to load translations for a language/namespace
+   */
+  read: async (
+    lng: string,
+    ns: string,
+    callback: (err: unknown, data?: unknown) => void
+  ) => {
+    try {
+      console.log(
+        `ApiBackend: Loading translations for language: ${lng}, namespace: ${ns}`
+      );
+
+      // Fetch translations from our API service
+      const { translation } = await fetchTranslations(lng, false); // Use cache when possible
+
+      console.log(`ApiBackend: Successfully loaded translations for ${lng}`);
+      console.log(
+        `ApiBackend: Available top-level keys:`,
+        Object.keys(translation)
+      );
+
+      // Helper function to get all nested keys
+      const getAllKeys = (
+        obj: Record<string, unknown>,
+        prefix = ""
+      ): string[] => {
+        let keys: string[] = [];
+        for (const key in obj) {
+          const fullKey = prefix ? `${prefix}.${key}` : key;
+          if (
+            typeof obj[key] === "object" &&
+            obj[key] !== null &&
+            !Array.isArray(obj[key])
+          ) {
+            keys = keys.concat(
+              getAllKeys(obj[key] as Record<string, unknown>, fullKey)
+            );
+          } else {
+            keys.push(fullKey);
+          }
+        }
+        return keys;
+      };
+
+      const allKeys = getAllKeys(translation);
+      console.log(
+        `ApiBackend: Total translation keys available: ${allKeys.length}`
+      );
+      console.log(`ApiBackend: Sample keys:`, allKeys.slice(0, 10));
+
+      callback(null, translation);
+    } catch (error) {
+      console.error(
+        `ApiBackend: Failed to load translations for ${lng}:`,
+        error
+      );
+      callback(error, {});
+    }
+  },
+
+  /**
+   * Called by i18next when it needs to save translations (not used in our read-only setup)
+   */
+  create: (
+    _lng: string,
+    _ns: string,
+    _key: string,
+    _fallbackValue: string,
+    callback?: (err: unknown) => void
+  ) => {
+    // We don't need to implement this for a read-only backend
+    if (callback) callback(new Error("Saving translations not supported"));
   },
 };
 
-// English translations
-const en = {
-  translation: {
-    common: {
-      search: 'Search',
-      import: 'Import',
-      about: 'About',
-      home: 'Home',
-      loading: 'Loading...',
-      error: 'Error',
-      success: 'Success',
-      cancel: 'Cancel',
-      save: 'Save',
-      delete: 'Delete',
-      edit: 'Edit',
-      close: 'Close',
+/**
+ * Initialize i18next with our custom API backend
+ * No local translations needed - everything comes from the API
+ */
+i18n
+  .use(ApiBackend)
+  .use(initReactI18next)
+  .init({
+    lng: "et", // Default language
+    fallbackLng: "en", // Fallback to English if keys missing
+    ns: ["translation"], // Namespace
+    defaultNS: "translation", // Default namespace
+    debug: import.meta.env.DEV, // Debug mode in development
+    interpolation: {
+      escapeValue: false, // React already does XSS protection
     },
-    navigation: {
-      title: 'Estonian Anagram Finder',
-      subtitle: 'Find word anagrams quickly and easily',
+    react: {
+      useSuspense: false, // Don't use suspense mode
     },
-    search: {
-      title: 'Anagram Search',
-      placeholder: 'Enter a word to find anagrams...',
-      searchButton: 'Search Anagrams',
-      noResults: 'No anagrams found',
-      results: {
-        title: 'Found anagrams:',
-        count: 'Total: {{count}} anagrams',
-        executionTime: 'Search time: {{time}}ms',
-        algorithm: 'Algorithm: {{algorithm}}',
-      },
-    },
-    wordbase: {
-      title: 'Wordbase Import',
-      status: 'Wordbase Status',
-      totalWords: 'Total words: {{count}}',
-      lastImport: 'Last import: {{date}}',
-      importForm: {
-        title: 'Import Words',
-        content: 'Words (one per line)',
-        format: 'Format',
-        language: 'Language',
-        importButton: 'Import Words',
-      },
-      formats: {
-        plaintext: 'Plain text',
-        json: 'JSON',
-      },
-      languages: {
-        et: 'Estonian',
-        en: 'English',
-        de: 'German',
-        fr: 'French',
-      },
-    },
-    about: {
-      title: 'About Anagram Finder',
-      description: 'This application allows you to find anagrams of Estonian words using advanced algorithms.',
-      features: {
-        title: 'Features:',
-        items: [
-          'Fast anagram search',
-          'Multilingual support',
-          'Customizable word database',
-          'Modern user interface',
-          'Real-time statistics',
-        ],
-      },
-      algorithm: {
-        title: 'Algorithm',
-        description: 'We use optimized algorithms that ensure fast and accurate anagram detection.',
-      },
-    },
-    errors: {
-      networkError: 'Network connection error',
-      serverError: 'Server error',
-      invalidInput: 'Invalid input',
-      wordNotFound: 'Word not found',
-      importFailed: 'Import failed',
-    },
-  },
-};
-
-i18n.use(initReactI18next).init({
-  resources: {
-    et,
-    en,
-  },
-  lng: 'et', // Default language
-  fallbackLng: 'en',
-  interpolation: {
-    escapeValue: false,
-  },
-});
+    backend: {}, // Our custom backend doesn't need extra options
+    // Wait for API to load before considering i18n ready
+    initImmediate: false,
+  });
 
 export default i18n;

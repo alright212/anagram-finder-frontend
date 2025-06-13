@@ -103,7 +103,7 @@ const AnagramSearchPage: React.FC = () => {
           {t("search.title")}
         </Heading>
         <Text color="gray.600">
-          Enter an Estonian word to find its anagrams
+          {t("search.description")}
         </Text>
       </Box>
 
@@ -145,7 +145,7 @@ const AnagramSearchPage: React.FC = () => {
       {searchHistory.length > 0 && (
         <Card>
           <CardHeader>
-            <Heading size="md">Recent Searches</Heading>
+            <Heading size="md">{t("search.recentSearches")}</Heading>
           </CardHeader>
           <CardBody>
             <HStack gap={2} wrap="wrap">
@@ -271,15 +271,13 @@ const AnagramSearchPage: React.FC = () => {
         <CardBody>
           <VStack gap={3} align="start">
             <Heading size="sm" color="blue.700">
-              💡 Search Tips
+              {t("search.tips.title")}
             </Heading>
             <VStack gap={2} align="start" fontSize="sm" color="blue.600">
-              <Text>• Use Estonian words for best results</Text>
-              <Text>• Words must be at least 2 characters long</Text>
-              <Text>
-                • Click on any anagram result to search for its anagrams
-              </Text>
-              <Text>• Use your recent searches for quick access</Text>
+              <Text>• {t("search.tips.items.estonianWords")}</Text>
+              <Text>• {t("search.tips.items.minimumLength")}</Text>
+              <Text>• {t("search.tips.items.clickResults")}</Text>
+              <Text>• {t("search.tips.items.useHistory")}</Text>
             </VStack>
           </VStack>
         </CardBody>
